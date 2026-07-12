@@ -20,6 +20,10 @@ app.use('/api/auth', authRoutes);
 const assetRoutes = require('./routes/assets');
 app.use('/api/assets', assetRoutes);
 
+// Add this near your other route imports:
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
+
 // ==========================================
 // 💾 MOCKED DATABASE CONNECTION (HACKATHON MODE)
 // ==========================================

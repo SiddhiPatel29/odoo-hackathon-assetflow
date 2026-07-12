@@ -86,4 +86,48 @@ router.post('/book', async (req, res) => {
   }
 });
 
+// ==========================================
+// 🔍 4. GLOBAL SEARCH AND LIVE INVENTORY FILTERS
+// ==========================================
+router.get('/inventory', (req, res) => {
+  try {
+    // 💡 Pre-populating some dummy assets so the frontend has data to display immediately
+    const sampleInventory = [
+      { id: "asset_1", name: "MacBook Pro 16", category: "Electronics", assetTag: "AF-1092", serialNumber: "SN99283", status: "Available", location: "HQ-Floor 1" },
+      { id: "asset_2", name: "Dell UltraSharp Monitor", category: "Electronics", assetTag: "AF-4402", serialNumber: "SN44102", status: "Allocated", location: "Remote" },
+      { id: "asset_3", name: "Conference Room B", category: "Spaces", assetTag: "AF-8819", serialNumber: "ROOM-B", status: "Reserved", location: "HQ-Floor 2" },
+      { id: "asset_4", name: "Ergonomic Office Chair", category: "Furniture", assetTag: "AF-3021", serialNumber: "SN55219", status: "Under Maintenance", location: "HQ-Floor 1" }
+    ];
+
+    // Grab query parameters from the URL (e.g., ?search=MacBook&status=Available)
+    const { search, status, category } = req.query;
+    let filteredResults = [...sampleInventory];
+
+    // 🏎️ Apply live text filtering (Checks Name or Asset Tag)
+    if (search) {
+      filteredResults = filteredResults.filter(item => 
+        item.name.toLowerCase().includes(search.toLowerCase()) || 
+        item.assetTag.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // 🏷️ Apply exact match status filtering
+    if (status) {
+      filteredResults = filteredResults.filter(item => item.status === status);
+    }
+
+    // 🗂️ Apply category filtering
+    if (category) {
+      filteredResults = filteredResults.filter(item => item.category.toLowerCase() === category.toLowerCase());
+    }
+
+    res.status(200).json({
+      count: filteredResults.length,
+      assets: filteredResults
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch inventory.", error: err.message });
+  }
+});
+
 module.exports = router;
