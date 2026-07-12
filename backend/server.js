@@ -24,6 +24,9 @@ app.use('/api/assets', assetRoutes);
 const adminRoutes = require('./routes/admin');
 app.use('/api/admin', adminRoutes);
 
+const maintenanceRoutes = require('./routes/maintenance');
+app.use('/api/maintenance', maintenanceRoutes);
+
 // ==========================================
 // 💾 MOCKED DATABASE CONNECTION (HACKATHON MODE)
 // ==========================================
