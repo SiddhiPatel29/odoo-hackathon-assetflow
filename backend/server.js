@@ -17,6 +17,9 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+const assetRoutes = require('./routes/assets');
+app.use('/api/assets', assetRoutes);
+
 // ==========================================
 // 💾 MOCKED DATABASE CONNECTION (HACKATHON MODE)
 // ==========================================
